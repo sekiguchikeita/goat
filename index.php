@@ -169,13 +169,11 @@ if($status==false) {
               <h3> 完了予定日：${data.end_date} </h3> 
               <h3> カテゴリー：${data.tag} </h3> 
               <h3> 所要時間：${data.how_long} </h3>
+              <p> ${data.comment} </p>
 
-            <a href="delete.php?taskid=${data.taskid}"> <i class="far fa-trash-alt"></i></a>
-            <br>
-            <a href="mendy.php?taskid=${data.taskid}"> 学習スタート（stop watch画面へ）</a>
-            <br>
-           
-            <p> ${data.comment} </p>
+              <a href="delete.php?taskid=${data.taskid}"> <i class="far fa-trash-alt"></i></a>
+              <br>
+            
           </div>
 
 
