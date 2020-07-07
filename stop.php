@@ -3,10 +3,20 @@
 session_start();
 //loginCheck();
 
+
+$lid = $_SESSION['lid'];
+$taskid = $_SESSION["taskid"];
+//$id = $taskid;
 //1.  DB接続します
+
+
 
 include("funcs.php");
 $pdo = db_conn();
+
+//$today = $_POST['today'];
+//$min = $_POST['todaymin'];
+//$tag = $_POST['tag'];
 
 
 
@@ -23,11 +33,12 @@ $pdo = db_conn();
 // }
 
 
-
-
+//$datasforwrite = array($taskid, $today, $min, $tag); 
+//echo $datasforwrite[3]. 'this is arrray';
+//$data = json_encode($datasforwrite);
 
 //13に引っ張ってきた目標時間(分)が入る
- $ttt = 5 * 60;
+ $ttt = 30 * 60;
  $php_test = $ttt;
  $json_test = json_encode( $php_test , JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 
@@ -72,17 +83,27 @@ $pdo = db_conn();
 
     <div id = 'timer'>
         <div id = 'box'>
+
             <!-- ここに受け取った時間を表示する. -->
             <h1 id = 'display'>目標:<span id = 'goal'></span></h1>  
             <div id= 'center'>
              <button id = 'start'>スタート</button>
             <button id = 'stop'>ストップ</button>
-            <button id = 'done'>出力</button>
-            <div id = "test" name="test"></div>
+            <!--<form method="post" id="plan_post" action="write1.php">-->
+            <!--<input type="hidden" name="taskid" value='<?=$taskid?>'}>-->
+            <!--<input type="hidden" name="today" value='<?=$today?>'}>-->
+            <!--<input type="hidden" name="min" value='<?=$min?>'}>-->
+            <!--<input type="hidden" name="tag" value='<?=$tag?>'}>-->
+            <input id = "test" name="test" ></input>
+            <input type="submit" id = 'done' value="出力">
+           
+           
             </div>
+          
         </div>
     </div>
-
+    
+    
  <footer>
   <p class="footer"> (C) g's academy</p>
 </footer>
@@ -97,6 +118,8 @@ var start_click = false;
 
 //時間データの代入
 var time = js_test =JSON.parse('<?php echo $json_test; ?>');
+var thirtymin = 0
+
 var min = 0;
 var sec = 0;
 
@@ -120,9 +143,13 @@ function count_down(){
     console.log(time);
     if (time === 1 ){
         display.innerHTML = '終了！';
+        //
     }else{
         time--;
-        $(test).val(time);
+        console.log(time + "time")
+        thirtymin++
+        console.log(thirtymin + "inputtime")
+        $(test).val(thirtymin);
         test.innerHTML = time;
         min = Math.floor(time / 60);
         sen = Math.floor(time % 60);
@@ -153,51 +180,99 @@ var stop = document.getElementById('stop');
 stop.addEventListener('click', count_stop , false );
 }
 
-    //出力と同時にcount_stopする
-    function click(){
-    count_stop()
-    var time = $('#test').val()
-    var time = parseInt(time);
-    
 
-    console.log(time);
+let taskid; 
+  if (!'<?=$taskid?>') {
+    taskid = ("empty")
+} else {
+    taskid = ('<?=$taskid?>')
+}
+console.log(taskid)
 
-    
 
-    // 2　ここでHTMLからのインプットヴァリューをOBJ方式に
-    let userinfo = {
-        'time' : time}
 
-// ３　ここでPOST
-    var userInfo = JSON.stringify(time);
-    
+
+
+//出力と同時にcount_stopする
+function click(){
+count_stop()
+var thirtymin = $('#test').val()
+var thirtymin = parseInt(thirtymin);
+
+
+
+
+// 2　ここでHTMLからのインプットヴァリューをOBJ方式に
+
+
     $.ajax({
-        url: "write1.php", // post先のページを入力
-        type: "POST",//メソッド
-        data: {user: userInfo},
-        success: function (data, textStatus, jqXHR) {
-            alert('success data');
-             //whatever
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-             //if fails
-            alert('fail');
-        }
-    
+            url: "write1.php", // post先のページを入力
+            type: "POST",//メソッド
+            data: {
+                "user": thirtymin, // ここを1800に変える
+                "taskid": taskid,    
+
+            },
+            success: function (data, textStatus, jqXHR) {
+                alert('success data');
+                //whatever
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                //if fails
+                alert('fail');
+            }
+        
     });
-    
+
+};
+
+
+
+
+// midnight 仕様の click
+function midnightclick(){
+count_stop()
+var thirtymin = $('#test').val()
+var thirtymin = parseInt(thirtymin);
+
+
+
+
+// 2　ここでHTMLからのインプットヴァリューをOBJ方式に
+
+
+    $.ajax({
+            url: "write1.php", // post先のページを入力
+            type: "POST",//メソッド
+            data: {
+                "user": thirtymin,
+                "taskid": taskid,    
+
+            },
+            success: function (data, textStatus, jqXHR) {
+                alert('success data');
+                //whatever
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                //if fails
+                alert('fail');
+            }
+        
+    });
+
+};
 
 $("#done").on("click", click)
 
 //24時に発動
 
-var midnight = "12:00:00";
+var midnight = "20:36:00";
 var now = null;
 setInterval(function () {
     now = moment().format("H:mm:ss");
     if (now === midnight) {
         count_stop();
-        click()
+        midnightclick()
     }
     $("#time").text(now);
 }, 1000);

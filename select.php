@@ -53,7 +53,8 @@ if($status==false) {
 <title>共有画面（達成度）</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-<link rel="stylesheet" type="text/css" href="./style.css">
+<link rel="stylesheet" href='css/reset.css'>
+<link rel="stylesheet" href='css/stop.css' >
 
 <style>div{padding: 10px;font-size:16px;}</style>
 </head>
@@ -61,15 +62,25 @@ if($status==false) {
 <!--id="main"-->
 <!-- Head[Start] -->
 <header>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">計画表</a>
-      <a class="navbar-brand" href="result.php">ユーザーページ（結果まとめページ想定）</a>
-      <a class="navbar-brand" href="logout.php">Logout</a>
-      </div>
-    </div>
-  </nav>
+<nav>
+ <div class="drawer">
+ <!--- いわゆるロゴ svg を利用------>
+   <div id="logo"><a href="main.php">GOAT</a></div>
+ 
+
+  </div>
+ <!-------------- drawer ここまで-->
+ 
+ <div class="menu">
+  <ul>
+   <li ><a href="main.php">ホーム</a></li>
+   <li ><a href="index.php">計画</a></li>
+   <li ><a href="result.php">結果</a></li>
+   <li><a href="select.php">共有</a></li>
+   <li ><a href="logout.php">Logout</a></li>
+  </ul>
+ </div>
+</nav>
 </header>
 <!-- Head[End] -->
 
